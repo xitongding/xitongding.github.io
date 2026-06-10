@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xitong Ding | Spatial & Urban Design</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Space+Grotesk:wght@500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #fbfbfb; 
+            --text-main: #0a0a0a;
+            --text-muted: #7a7a7a;
+            --accent-color: #f43000; 
+            --border-color: #1a1a1a;
+            --font-heading: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        ::-webkit-scrollbar { display: none; } 
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.4;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .motif-cross {
+            display: inline-block; font-weight: 300; color: var(--accent-color);
+            margin-right: 15px; font-family: var(--font-body); font-size: 1.2em; transform: translateY(2px);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        
+        .section-header {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 7vw, 9rem);
+            font-weight: 900; letter-spacing: -0.04em; line-height: 0.85;
+            margin-bottom: 40px; color: var(--text-main);
+            display: flex; align-items: baseline; cursor: default;
+        }
+        
+        .section-header:hover .motif-cross {
+            transform: translateY(2px) rotate(180deg);
+        }
+
+        .wrapper { max-width: 92vw; margin: 0 auto; }
+
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+            background-color: rgba(251, 251, 251, 0.95); backdrop-filter: blur(5px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 4vw; color: var(--text-main);
+            font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .nav-links { display: flex; gap: 3vw; }
+        .nav-links a { color: var(--text-main); text-decoration: none; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--accent-color); }
+        
+        section { padding: 60px 0; }
+        
+        /* 1. 英雄区 (Hero) */
+        .hero { 
+            display: grid; 
+            grid-template-columns: 1fr minmax(180px, 20vw); 
+            column-gap: 6vw; 
+            align-items: start;
+            padding-top: 140px; padding-bottom: 60px; border-bottom: 1px solid var(--border-color);
+        }
+        
+        .hero-title, .hero-about-container, .hero-tags {
+            justify-self: start;
+        }
+
+        .hero-title {
+            grid-column: 1; grid-row: 1;
+            font-family: var(--font-heading); font-size: clamp(4rem, 12vw, 15rem);
+            font-weight: 900; line-height: 0.8; letter-spacing: -0.05em; margin-bottom: 30px; color: var(--text-main); margin-top: -0.06em; 
+        }
+        
+        .hero-about-container {
+            grid-column: 1; grid-row: 2;
+            margin-bottom: 40px; max-width: 90%;
+        }
+
+        .hero-about { 
+            font-size: 1.05rem; color: var(--text-main); font-weight: 400; line-height: 1.5;
+        }
+        
+        .hero-tags {
+            grid-column: 1; grid-row: 3;
+        }
+
+        .highlight-label {
+            font-family: var(--font-heading); font-size: 1rem; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; display: block; color: var(--accent-color); letter-spacing: 0.05em;
+        }
+        .research-interests { display: flex; flex-wrap: wrap; gap: 8px; }
+        .keyword {
+            font-size: 0.95rem; font-weight: 500; padding: 4px 12px; border-radius: 4px; text-transform: lowercase; border: 1px solid var(--border-color); transition: all 0.3s ease; cursor: default;
+        }
+        .keyword:hover { background-color: var(--accent-color); color: #fff; border-color: var(--accent-color); }
+        
+        .hero-photo { 
+            grid-column: 2; grid-row: 1 / span 3;
+            width: 100%; aspect-ratio: 3/4; background-color: #eee; position: relative; overflow: hidden; 
+        }
+        .hero-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); }
+
+        /* 2. 当前研究 */
+        .research-container { display: grid; grid-template-columns: 1fr 2.5fr; gap: 4vw; align-items: start; }
+        .research-info h3 { font-family: var(--font-heading); font-size: 2rem; text-transform: uppercase; margin-bottom: 15px; line-height: 1.1;}
+        .research-info p { font-size: 1.05rem; color: var(--text-muted);}
+        
+        .research-video-wrapper {
+            width: 100%; position: relative; overflow: hidden; background-color: #111; cursor: zoom-in; transition: transform 0.4s ease;
+        }
+        .research-video-wrapper::before { content: ""; display: block; padding-bottom: 56.25%; }
+        .research-video-wrapper video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+        .research-video-wrapper:hover { transform: scale(0.98); border: 2px solid var(--accent-color); }
+        
+        .video-close-btn { display: none; position: absolute; top: 20px; right: 30px; font-size: 3rem; color: #fff; z-index: 10001; cursor: pointer; font-weight: 300; }
+
+        .fullscreen-video {
+            position: fixed !important; top: 0; left: 0; width: 100vw !important; height: 100vh !important;
+            z-index: 9999; background: rgba(0,0,0,0.98); display: flex; align-items: center; justify-content: center;
+            transform: none !important; cursor: default !important; border: none !important; margin: 0 !important;
+        }
+        .fullscreen-video::before { display: none; }
+        .fullscreen-video video { 
+            position: relative !important; width: 90% !important; height: auto !important; max-height: 90vh !important;
+            object-fit: contain; pointer-events: auto !important; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .fullscreen-video .video-close-btn { display: block; }
+
+        /* 3. 其他研究 */
+        .accordion-item { border-bottom: 1px solid #ddd; }
+        .accordion-item:first-child { border-top: 1px solid #ddd; }
+        .accordion-header {
+            width: 100%; display: grid; grid-template-columns: 100px 1fr 40px; text-align: left; padding: 25px 0; background: none; border: none; cursor: pointer; align-items: center; transition: padding-left 0.3s ease;
+            color: var(--text-main); -webkit-appearance: none; appearance: none;
+        }
+        .accordion-header:hover { padding-left: 15px; }
+        .accordion-header:hover .acc-title { color: var(--accent-color); }
+        .acc-year { font-family: var(--font-heading); font-size: 1.4rem; font-weight: 700; color: var(--text-main); }
+        .acc-title { font-family: var(--font-heading); font-size: 1.6rem; font-weight: 700; text-transform: uppercase; transition: color 0.3s; color: var(--text-main);}
+        .acc-icon { font-size: 2rem; font-weight: 300; text-align: right; transition: transform 0.4s ease; color: var(--accent-color); }
+        .accordion-header.active .acc-icon { transform: rotate(45deg); color: var(--text-main); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+        .accordion-content-inner { padding: 0 0 30px 100px; font-size: 1.05rem; color: var(--text-muted); max-width: 900px; }
+        .acc-meta { display: block; font-weight: 600; color: var(--text-main); margin-bottom: 8px; font-size: 0.9rem;}
+
+        /* 4. 设计作品 */
+        .design-grid { display: grid; grid-template-columns: repeat(6, 1fr) !important; gap: 1.5vw; }
+        .design-card { text-decoration: none; color: var(--text-main); display: flex; flex-direction: column; cursor: pointer; }
+        .design-img-wrapper { width: 100%; position: relative; overflow: hidden; background-color: #eee; }
+        .design-img-wrapper::before { content: ""; display: block; padding-bottom: 75%; }
+        .design-img-wrapper img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: all 0.5s ease; }
+        .design-meta { padding-top: 12px; }
+        .design-title-text { font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem; text-transform: uppercase; transition: color 0.3s;}
+        .design-year { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; margin-top: 2px;}
+        .design-card:hover .design-img-wrapper img { filter: grayscale(0%); transform: scale(1.05); }
+        .design-card:hover .design-title-text { color: var(--accent-color); }
+
+        /* 5. 经历 */
+        .exp-list { display: flex; flex-direction: column; gap: 30px; max-width: 1000px; margin: 0 auto;}
+        .exp-item { display: grid; grid-template-columns: 120px 1fr; align-items: start; gap: 3vw;}
+        .exp-time { display: flex; flex-direction: column; }
+        .exp-year-big { font-family: var(--font-heading); font-size: 2rem; font-weight: 700; color: var(--text-main); line-height: 1; }
+        .exp-date-small { font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; font-weight: 500;}
+        .exp-content h4 { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; line-height: 1.2; }
+        .exp-org { font-size: 1rem; color: var(--accent-color); font-weight: 500; margin-bottom: 6px; }
+
+        /* 6. 联系区 */
+        .contact-section { padding: 40px 0 100px 0; }
+        .contact-header {
+            font-family: var(--font-heading); font-size: clamp(3rem, 8vw, 8rem); font-weight: 900; text-transform: uppercase; border: none; padding: 20px 0; color: var(--text-main); margin-bottom: 20px;
+        }
+        .contact-links-row { display: flex; gap: 4vw; align-items: center; }
+        .contact-links-row a {
+            font-family: var(--font-body); font-size: clamp(1rem, 2vw, 1.5rem); font-weight: 700; color: var(--text-main); text-decoration: none; border-bottom: 3px solid var(--text-main); padding-bottom: 3px; transition: color 0.3s, border-color 0.3s;
+        }
+        .contact-links-row a:hover { color: var(--accent-color); border-bottom-color: var(--accent-color); }
+        .contact-links-row a:hover .motif-cross { transform: translateY(2px) rotate(180deg); }
+
+        /* === 弹窗 Modal === */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100vw; height: 100vh;
+            background-color: var(--bg-color); overflow: hidden;
+        }
+        .modal-close {
+            position: fixed; top: 2vw; right: 3vw; font-size: 3.5rem; font-weight: 300; cursor: pointer; z-index: 1001; 
+            color: var(--text-main); transition: color 0.3s, transform 0.3s;
+        }
+        .modal-close:hover { color: var(--accent-color); transform: rotate(90deg);}
+        
+        .modal-content-wrapper { display: flex; height: 100vh; width: 100vw; }
+        .modal-left { 
+            width: 35%; flex-shrink: 0; padding: 6vw 4vw; display: flex; flex-direction: column; 
+            justify-content: center; border-right: 1px solid var(--border-color); overflow-y: auto;
+        }
+        .modal-left h2 { font-family: var(--font-heading); font-size: 3rem; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; line-height: 1; color: var(--accent-color);}
+        .modal-left .location { font-size: 1rem; color: var(--text-main); margin-bottom: 30px; text-transform: uppercase; font-weight: 600;}
+        .modal-left p { font-size: 1.05rem; line-height: 1.5; color: var(--text-muted);}
+        
+        .modal-right { 
+            width: 65%; height: 100vh; overflow-y: auto; background-color: #f0f0f0; padding: 4vw; 
+        }
+        .modal-scroll-area { display: flex; flex-direction: column; gap: 4vw; width: 100%; }
+        .modal-scroll-area img { width: 100%; height: auto; object-fit: contain; display: block; box-shadow: 0 10px 30px rgba(0,0,0,0.05);}
+
+        /* =========================================
+           响应式断点控制
+           ========================================= */
+        @media (max-width: 1200px) {
+            .design-grid { grid-template-columns: repeat(3, 1fr) !important; }
+        }
+        @media (max-width: 1024px) {
+            .hero { grid-template-columns: 1fr 25vw; gap: 5vw; padding-top: 120px; }
+            .research-container { grid-template-columns: 1fr; gap: 30px; }
+            .accordion-header { grid-template-columns: 80px 1fr 40px; }
+            .acc-title { font-size: 1.3rem; }
+            .accordion-content-inner { padding-left: 0; }
+            .exp-item { grid-template-columns: 1fr; gap: 10px; }
+            .exp-year-big { display: inline-block; margin-right: 15px; }
+            .exp-date-small { display: inline-block; }
+            
+            .modal { overflow-y: auto; } 
+            .modal-content-wrapper { display: block; height: auto; }
+            .modal-left { width: 100%; height: auto; padding: 15vw 5vw 5vw 5vw; border-right: none; border-bottom: 1px solid #ddd; margin-bottom: 5vw;}
+            .modal-right { width: 100%; height: auto; overflow-y: visible; padding: 0 5vw 10vw 5vw; background-color: transparent;}
+            .modal-close { background: rgba(251,251,251,0.8); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; top: 15px; right: 15px;}
+        }
+        @media (max-width: 768px) {
+            section { padding: 40px 0; }
+            section[id] { scroll-margin-top: 16px; }
+
+            nav {
+                padding: 16px 3vw;
+                font-size: 0.74rem;
+            }
+            .nav-brand {
+                font-size: 0;
+                line-height: 1;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+            .nav-brand::before {
+                content: "X.DING";
+                font-size: 0.8rem;
+            }
+            .nav-links {
+                gap: 2.4vw;
+                flex-wrap: nowrap;
+            }
+            .nav-links a {
+                font-size: 0.74rem;
+                letter-spacing: 0.02em;
+            }
+            .nav-links a:active {
+                color: var(--accent-color);
+            }
+            .accordion-header:active .acc-title {
+                color: var(--accent-color);
+            }
+            .design-card:active .design-img-wrapper img {
+                filter: grayscale(0%);
+                transform: scale(1.03);
+            }
+
+            /* 手机端终极排版：首行左右并排，下文横向铺满全屏 */
+            .hero { 
+                grid-template-columns: 1fr 35vw; /* 名字占据剩余空间，照片锁定 35vw 宽度 */
+                column-gap: 5vw; row-gap: 25px;
+                padding-top: 100px; padding-bottom: 20px;
+            }
+            .hero-title { 
+                grid-column: 1; grid-row: 1; 
+                font-size: clamp(3rem, 12vw, 5rem); margin-bottom: 0; 
+                align-self: center; /* 名字与照片垂直居中对齐 */
+            }
+            .hero-photo { 
+                grid-column: 2; grid-row: 1; 
+                height: auto; aspect-ratio: 3/4; 
+            } 
+            .hero-about-container { 
+                grid-column: 1 / -1; /* 跨越两列，占据全宽 */
+                grid-row: 2; 
+                max-width: 100%; margin-bottom: 0; 
+            }
+            .hero-about { font-size: 1rem; }
+            .research-info p { font-size: 1rem; }
+            .hero-tags { grid-column: 1 / -1; grid-row: 3; margin-top: 10px; }
+            
+            .design-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-brand">XITONG DING</div>
+        <div class="nav-links">
+            <a href="#research">Research</a>
+            <a href="#design">Design</a>
+            <a href="#experience">Experience</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <div class="wrapper">
+
+        <section class="hero">
+            <h1 class="hero-title">XITONG<br>DING</h1>
+            
+            <div class="hero-about-container">
+                <span class="highlight-label">ABOUT ME</span>
+                <div class="hero-about">
+                    I am a second-year Ph.D. student at the University of Birmingham. My research explores the intersection of digital technologies and public engagement to create more inclusive cities. During my previous practice as a landscape architect, I noticed a critical lack of public participation in urban design, which inspired me to pursue my current doctoral journey in 2024.
+                </div>
+            </div>
+
+            <div class="hero-tags">
+                <span class="highlight-label">Research Interests</span>
+                <div class="research-interests">
+                    <span class="keyword">public participation</span>
+                    <span class="keyword">digital tools</span>
+                    <span class="keyword">urban governance</span>
+                    <span class="keyword">green infrastructure</span>
+                    <span class="keyword">gender urban planning</span>
+                </div>
+            </div>
+            
+            <div class="hero-photo">
+                <img src="images/me.jpg" alt="Portrait Photo">
+            </div>
+        </section>
+
+        <section id="research">
+            <div class="section-header"><span class="motif-cross">+</span> CURRENT PhD RESEARCH</div>
+            <div class="research-container">
+                <div class="research-info">
+                    <h3>Improving Public Engagement in Urban Green Infrastructure Governance through Digital Twins</h3>
+                    <p>Based on a pilot study at The Vale Village, this research focuses on utilising interactive 3D models to facilitate public engagement especially in green space governance. Within the virtual environment, participants can adjust settings such as weather and time, freely edit site elements, and leave comments, creating a highly immersive co-design experience.</p>
+                </div>
+                <div class="research-video-wrapper" id="videoWrapper" title="Click to expand">
+                    <video src="images/vale-model.mp4" autoplay loop muted playsinline disablePictureInPicture></video>
+                    <div class="video-close-btn" id="videoCloseBtn">&times;</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-header"><span class="motif-cross">+</span> OTHER RESEARCH</div>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span class="acc-year">2025</span>
+                        <span class="acc-title">Inclusive Cities: Exploring Women-Friendly Public Space Planning (in Chinese)</span>
+                        <span class="acc-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <span class="acc-meta">Published in the Proceedings of the 2025 China Planning Annual Conference</span>
+                            This paper explores women-friendly public space planning within the paradigm of inclusive cities and gender mainstreaming. By analysing gender-specific spatial behaviours and perceptions, the study proposes a localised planning framework. It specifically focuses on optimising green public spaces, pedestrian networks, safety infrastructure, and public art installations to translate gender-inclusive concepts into tangible spatial governance.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span class="acc-year">2025</span>
+                        <span class="acc-title">The Role of Digital Technologies in Intergenerational Participation for Sustainable Communities</span>
+                        <span class="acc-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <span class="acc-meta">Presented in Royal Geographical Society (RGS) Annual International Conference 2025</span>
+                            Addressing the distinct digital divides and participatory behaviours across different age groups, this study explores how technology can facilitate meaningful intergenerational engagement. The study summarises existing ladders of digital participation to evaluate current digital platforms. It outlines a practical pathway from user-friendly design to inclusive decision-making, aiming to promote digital intergenerational engagement in future community spaces.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span class="acc-year">2020</span>
+                        <span class="acc-title">Recovering the Landscape of the Carrione River Watershed</span>
+                        <span class="acc-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <span class="acc-meta">MSc Graduation Project in Politecnico di Milano</span>
+                            The Carrione, a 20km watercourse connecting marble quarry basins to the Mediterranean Sea, suffers from severe industrial pollution and landscape degradation. To address this, this project starts from the territorial scale to explore the relationship between watershed, city, and landscape. It then proposes strategies for recovering the watershed landscape, establishing a new blue-green system across different scales.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span class="acc-year">2020</span>
+                        <span class="acc-title">The Life Cycle of Obsolete Culture Heritage Rural Area in Italy</span>
+                        <span class="acc-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <span class="acc-meta">Group Research in Politecnico di Milano</span>
+                            Using the Piemonte region as a case study, this research analyses both the tangible and intangible elements within the life cycle of obsolete cultural heritage in rural Italy. It establishes a quantitative decision-making model to systematically evaluate and revitalise abandoned sites, transforming them into catalysts for sustainable rural regeneration.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="design">
+            <div class="section-header"><span class="motif-cross">+</span> DESIGN WORK</div>
+            <div class="design-grid">
+                
+                <div class="design-card project-trigger" 
+                     data-title="Wuhan Science Eco City" 
+                     data-loc="2022 | Work Project | Group Work" 
+                     data-desc="An ecologically oriented landscape design for a commercial office area, aiming to integrate the natural environment with the business space."
+                     data-img1="images/wuhan-1.jpg"
+                     data-img2="images/wuhan-2.jpg"
+                     data-img3="images/wuhan-3.jpg">
+                    <div class="design-img-wrapper"><img src="images/wuhan-1.jpg" alt="Wuhan"></div>
+                    <div class="design-meta">
+                        <div class="design-title-text">WUHAN ECO CITY</div>
+                        <div class="design-year">Work Project</div>
+                    </div>
+                </div>
+                
+                <div class="design-card project-trigger" 
+                     data-title="Cainiao Yungu Campus" 
+                     data-loc="2021 | Work Project | Group Work" 
+                     data-desc="Landscape architecture for office spaces that prioritises functionality, aesthetics and user experience."
+                     data-img1="images/cainiao-1.jpg"
+                     data-img2="images/cainiao-2.jpg"
+                     data-img3="images/cainiao-3.jpg">
+                    <div class="design-img-wrapper"><img src="images/cainiao-1.jpg" alt="Cainiao"></div>
+                    <div class="design-meta">
+                        <div class="design-title-text">CAINIAO CAMPUS</div>
+                        <div class="design-year">Work Project</div>
+                    </div>
+                </div>
+                
+                <div class="design-card project-trigger" 
+                     data-title="Sanya Urban Infrastructure" 
+                     data-loc="2021 | Work Project | Individual Work" 
+                     data-desc="Urban elements and infrastructure spatial design for Sanya city."
+                     data-img1="images/sanya-1.jpg"
+                     data-img2="images/sanya-2.jpg"
+                     data-img3="images/sanya-3.jpg">
+                    <div class="design-img-wrapper"><img src="images/sanya-1.jpg" alt="Sanya"></div>
+                    <div class="design-meta">
+                        <div class="design-title-text">SANYA INFRASTRUCTURE</div>
+                        <div class="design-year">Work Project</div>
+                    </div>
+                </div>
+                
+                <div class="design-card project-trigger" 
+                     data-title="Recovering the Landscape of the Carrione River Watershed" 
+                     data-loc="2020 | Student Project | Individual Work" 
+                     data-desc="New blue-green systems in Carrara. Transforming post-industrial voids and river networks into adaptive systems."
+                     data-img1="images/carrione-1.jpg"
+                     data-img2="images/carrione-2.jpg"
+                     data-img3="images/carrione-3.jpg"
+                     data-img4="images/carrione-4.jpg"
+                     data-img5="images/carrione-5.jpg"
+                     data-img6="images/carrione-6.jpg">
+                    <div class="design-img-wrapper"><img src="images/carrione-1.jpg" alt="Carrione"></div>
+                    <div class="design-meta">
+                        <div class="design-title-text">CARRIONE WATERSHED</div>
+                        <div class="design-year">Student Project</div>
+                    </div>
+                </div>
+
+                <div class="design-card project-trigger" 
+                     data-title="ITALY CULTURAL HERITAGE" 
+                     data-loc="2020 | Student Project | Group Work" 
+                     data-desc="Established a decision-making model to evaluate and revitalise abandoned cultural heritage sites in Italy."
+                     data-img1="images/italy-1.jpg"
+                     data-img2="images/italy-2.jpg"
+                     data-img3="images/italy-3.jpg"
+                     data-img4="images/italy-4.jpg">
+                    <div class="design-img-wrapper"><img src="images/italy-1.jpg" alt="Italy"></div>
+                    <div class="design-meta">
+                        <div class="design-title-text">ITALY CULTURAL HERITAGE</div>
+                        <div class="design-year">Student Project</div>
+                    </div>
+                </div>
+
+                <div class="design-card project-trigger" 
+                     data-title="Urban Village Design in Shenzhen" 
+                     data-loc="2017 | Student Project | Individual Work" 
+                     data-desc="Gangxia urban village internal regional structure redevelopment and residential space design."
+                     data-img1="images/shenzhen-1.jpg"
+                     data-img2="images/shenzhen-2.jpg"
+                     data-img3="images/shenzhen-3.jpg"
+                     data-img4="images/shenzhen-4.jpg">
+                    <div class="design-img-wrapper"><img src="images/shenzhen-1.jpg" alt="Shenzhen"></div>
+                    <div class="design-meta">
+                        <div class="design-title-text">SHENZHEN VILLAGE</div>
+                        <div class="design-year">Student Project</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="experience">
+            <div class="section-header"><span class="motif-cross">+</span> EXPERIENCE</div>
+            <div class="exp-list">
+                
+                <div class="exp-item">
+                    <div class="exp-time">
+                        <div class="exp-year-big">2026</div>
+                        <div class="exp-date-small">Jan - May 2026</div>
+                    </div>
+                    <div class="exp-content">
+                        <h4>Teaching Assistant</h4>
+                        <div class="exp-org">Sustainable Urban Planning Module</div>
+                    </div>
+                </div>
+
+                <div class="exp-item">
+                    <div class="exp-time">
+                        <div class="exp-year-big">2024</div>
+                        <div class="exp-date-small">2024 - Present</div>
+                    </div>
+                    <div class="exp-content">
+                        <h4>PhD Candidate</h4>
+                        <div class="exp-org">School of Geography, University of Birmingham</div>
+                    </div>
+                </div>
+
+                <div class="exp-item">
+                    <div class="exp-time">
+                        <div class="exp-year-big">2021</div>
+                        <div class="exp-date-small">2021 - 2023</div>
+                    </div>
+                    <div class="exp-content">
+                        <h4>Landscape Architect</h4>
+                        <div class="exp-org">ECOLAND Planning and Design</div>
+                    </div>
+                </div>
+
+                <div class="exp-item">
+                    <div class="exp-time">
+                        <div class="exp-year-big">2018</div>
+                        <div class="exp-date-small">2018 - 2020</div>
+                    </div>
+                    <div class="exp-content">
+                        <h4>MSc. Landscape Architecture_Land.landscape heritage</h4>
+                        <div class="exp-org">Politecnico di Milano</div>
+                    </div>
+                </div>
+
+                <div class="exp-item">
+                    <div class="exp-time">
+                        <div class="exp-year-big">2014</div>
+                        <div class="exp-date-small">2014 - 2018</div>
+                    </div>
+                    <div class="exp-content">
+                        <h4>BSc. Landscape Architecture</h4>
+                        <div class="exp-org">South China Agricultural University</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <div class="contact-header">LET'S CONTACT</div>
+            <div class="contact-links-row">
+                <a href="mailto:xxd488@student.bham.ac.uk"><span class="motif-cross">+</span> EMAIL: xxd488@student.bham.ac.uk</a>
+                <a href="https://www.linkedin.com/in/xitong-ding-1a6aa3291/" target="_blank"><span class="motif-cross">+</span> LinkedIn</a>
+            </div>
+        </section>
+
+    </div>
+
+    <div id="projectModal" class="modal">
+        <span class="modal-close" id="closeModal">&times;</span>
+        <div class="modal-content-wrapper">
+            <div class="modal-left">
+                <div class="location" id="modalLoc">Year | Category</div>
+                <h2 id="modalTitle">Project Title</h2>
+                <p id="modalDesc">Project description goes here.</p>
+            </div>
+            <div class="modal-right">
+                <div class="modal-scroll-area" id="modalScrollArea">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. 完美视频全屏 + 控制条 + 关闭按钮
+        const videoWrapper = document.getElementById('videoWrapper');
+        const video = videoWrapper.querySelector('video');
+        const videoCloseBtn = document.getElementById('videoCloseBtn');
+
+        videoWrapper.addEventListener('click', function(e) {
+            if (this.classList.contains('fullscreen-video') && e.target === video) {
+                return; 
+            }
+            if (!this.classList.contains('fullscreen-video')) {
+                this.classList.add('fullscreen-video');
+                document.body.style.overflow = "hidden";
+                video.controls = true; 
+            }
+        });
+
+        videoCloseBtn.addEventListener('click', function(e) {
+            e.stopPropagation(); 
+            videoWrapper.classList.remove('fullscreen-video');
+            document.body.style.overflow = "auto";
+            video.controls = false; 
+            video.muted = true; 
+        });
+
+        // 2. 十字星标折叠菜单
+        document.querySelectorAll('.accordion-header').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const isActive = button.classList.contains('active');
+                
+                document.querySelectorAll('.accordion-header').forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.nextElementSibling.style.maxHeight = null;
+                });
+
+                if (!isActive) {
+                    button.classList.add('active');
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+
+        // 3. 项目弹窗
+        const modal = document.getElementById('projectModal');
+        const closeModal = document.getElementById('closeModal');
+        const mTitle = document.getElementById('modalTitle');
+        const mLoc = document.getElementById('modalLoc');
+        const mDesc = document.getElementById('modalDesc');
+        const scrollArea = document.getElementById('modalScrollArea');
+
+        document.querySelectorAll('.project-trigger').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault(); 
+                mTitle.textContent = card.getAttribute('data-title');
+                mLoc.textContent = card.getAttribute('data-loc');
+                mDesc.textContent = card.getAttribute('data-desc');
+                
+                scrollArea.innerHTML = '';
+                
+                for(let i = 1; i <= 6; i++) {
+                    const imgSrc = card.getAttribute('data-img' + i);
+                    if(imgSrc) {
+                        const img = document.createElement('img');
+                        img.src = imgSrc;
+                        scrollArea.appendChild(img);
+                    }
+                }
+                
+                modal.style.display = "block";
+                document.body.style.overflow = "hidden"; 
+            });
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto"; 
+        });
+    </script>
+</body>
+</html>
